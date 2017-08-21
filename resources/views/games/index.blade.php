@@ -25,12 +25,12 @@
                                 <td>{{$game->name}}</td>
                                 <td>{{count($game->plays)}}</td>
                                 <td>
-                                    <a class="btn btn-default"  href="{{ route('game.show', ['game'=>$game]) }}"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                    <a class="btn btn-warning"  href="{{ route('game.edit', ['game'=>$game]) }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    <form style="display: inline;" action="{{ route('admin.competition.destroy', ['game'=>$item]) }}" method="POST">
+                                    <a class="btn btn-default"  href="{{ route('games.show', ['game'=>$game]) }}"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                    <a class="btn btn-warning"  href="{{ route('games.edit', ['game'=>$game]) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <form style="display: inline;" action="{{ route('games.destroy', ['game'=>$game]) }}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
-                                        <button data-toggle="tooltip" title="Delete Competition" data-placement="top" id="delete-{{$item->id}}" class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you\'d like to delete this competition?')">
+                                        <button data-toggle="tooltip" title="Delete Game" data-placement="top" class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you\'d like to delete this game?')">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </button>
                                     </form>
