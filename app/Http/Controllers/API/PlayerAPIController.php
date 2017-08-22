@@ -79,7 +79,7 @@ class PlayerAPIController extends Controller
 
     public function getLeaderBoard($slots)
     {
-        $num_players = isset($slots['numLeaders']) ? $slots['numLeaders']['value'] : 3;
+        $num_players = isset($slots['numLeaders']['value']) ? $slots['numLeaders']['value'] : 3;
         $players = array_values($this->playersByActualWinRate()->slice(0,$num_players)->toArray());
         $places = ['first','second','third','fourth', 'fifth', 'sixth','seventh','eighth','ninth','tenth'];
         $result_text = "";
