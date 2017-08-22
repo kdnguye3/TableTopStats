@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 Route::get('/players', 'API\PlayerAPIController@index');
-Route::post('/leaders', 'API\PlayerAPIController@getLeaderBoard');
+Route::post('/echo', 'API\PlayerAPIController@getResult');
 
