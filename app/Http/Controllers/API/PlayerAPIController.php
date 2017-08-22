@@ -84,10 +84,7 @@ class PlayerAPIController extends Controller
     public function getPlayerStats($slots)
     {
         $name = substr($slots['player']['value'],0,-1);
-        $name = preg_replace_callback('/([.!?])\s*(\w)/', function ($matches) {
-            return strtoupper($matches[1] . ' ' . $matches[2]);
-        }, ucfirst(strtolower($name)));
-        $player = $this->playerService->publishStats(Player::where('name','=',$name)->first());
+        $player = $this->playerService->publishStats(Player::where('name','LIKE',$name."%")->first());
         $percent = round($player['win_rate']*100) . "%";
         $result_text = $name . " has won " . $player['wins'] . " games with a " . $percent . " win rate.";
         $response = [];
