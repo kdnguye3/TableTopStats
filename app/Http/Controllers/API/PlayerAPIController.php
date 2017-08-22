@@ -33,6 +33,7 @@ class PlayerAPIController extends Controller
         //dd($result);
         return response()->json((array_values($array)));
     }
+
     public function getLeaderBoard(Request $request){
         $data =  $request->json()->all();
         if ($data['session']['application']['applicationId'] === "amzn1.ask.skill.2a00a5c7-e5da-409d-aaa5-fd77513678a7"){
@@ -43,10 +44,8 @@ class PlayerAPIController extends Controller
                 $response['response'] = [];
                 $response['response']['outputSpeech'] = [];
                 $response['response']['outputSpeech']['type'] = 'PlainText';
-                $response['response']['outputSpeech']['text'] = 'Kevin';
+                $response['response']['outputSpeech']['text'] = 'Kristie I love you';
                 return response()->json($response);
-
-
             }
 
         }
