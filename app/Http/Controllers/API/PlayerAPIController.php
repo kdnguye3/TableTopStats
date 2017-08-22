@@ -67,14 +67,37 @@ class PlayerAPIController extends Controller
         if ($data['session']['application']['applicationId'] === "amzn1.ask.skill.2a00a5c7-e5da-409d-aaa5-fd77513678a7") {
             if ($data['request']['type'] === 'IntentRequest') {
                 $intent = $data['request']['intent']['name'];
-                if ($intent === "GetLeaderBoard"){
-                    return $this->getLeaderBoard($data['request']['intent']['slots']);
+                switch ($intent){
+                    case "GetLeaderBoard":
+                        return $this->getLeaderBoard($data['request']['intent']['slots']);
+
+                    case "GetPlayerInfo" :
+                        return $this->getPlayerStats($data['request']['intent']['slots']);
                 }
             }
         }
         else {
             return response()->json(['error'=> ["Forbidden"] ], 403);
         }
+    }
+
+    public function getPlayerStats($slots)
+    {
+        $name = substr($slots['player']['value'],0,-1);
+        $name = preg_replace_callback('/([.!?])\s*(\w)/', function ($matches) {
+            return strtoupper($matches[1] . ' ' . $matches[2]);
+        }, ucfirst(strtolower($name)));
+        $player = $this->playerService->publishStats(Player::where('name','=',$name)->first());
+        $percent = round($player['win_rate']*100) . "%";
+        $result_text = $name . " has won " . $player['wins'] . " games with a " . $percent . " win rate.";
+        $response = [];
+        $response['version'] = '1.0';
+        $response['response'] = [];
+        $response['response']['outputSpeech'] = [];
+        $response['response']['outputSpeech']['type'] = 'PlainText';
+        $response['response']['outputSpeech']['text'] = $result_text;
+        return response()->json($response);
+
     }
 
     public function getLeaderBoard($slots)
