@@ -34,6 +34,24 @@ class PlayerAPIController extends Controller
         return response()->json((array_values($array)));
     }
     public function getLeaderBoard(Request $request){
-        dd($request);
+        $data =  $request->json()->all();
+        if ($data['session']['application']['applicationId'] === "amzn1.ask.skill.2a00a5c7-e5da-409d-aaa5-fd77513678a7"){
+            //
+            if ($data['request']['type'] === 'IntentRequest'){
+                $response = [];
+                $response['version'] = '1.0';
+                $response['response'] = [];
+                $response['response']['outputSpeech'] = [];
+                $response['response']['outputSpeech']['type'] = 'PlainText';
+                $response['response']['outputSpeech']['text'] = 'Kevin';
+                return response()->json($response);
+
+
+            }
+
+        }
+        else {
+            return response()->json(['error'=> ["Forbidden"] ], 403);
+        }
     }
 }
