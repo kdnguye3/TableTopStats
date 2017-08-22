@@ -33,4 +33,7 @@ class PlayerAPIController extends Controller
         //dd($result);
         return response()->json((array_values($array)));
     }
+    public function getLeaderBoard(Request $request){
+        dd($request);
+    }
 }
