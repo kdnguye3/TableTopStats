@@ -31,6 +31,6 @@ class PlayerAPIController extends Controller
         //dd($array);
         //dd($player_array);
         //dd($result);
-        return response()->json((array_values($array))[1]);
+        return response()->json((array_values($array)));
     }
 }
