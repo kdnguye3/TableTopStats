@@ -19,6 +19,7 @@ class CreatePlayPlayerTable extends Migration
             $table->foreign('play_id')->references('id')->on('plays');
             $table->integer('player_id')->unsigned();
             $table->foreign('player_id')->references('id')->on('players');
+            $table->integer('team_id')->unsigned()->nullable();
             $table->integer('place')->unsigned();
         });
     }

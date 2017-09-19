@@ -11,18 +11,21 @@
         ]) !!};
     </script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/app.js') }}"></script>
+
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>TableTopStats</title>
     @yield('head')
 </head>
 <body id="app-layout">
-<div id="app">
-    <div id="content">
-        @yield('content')
+
+    <div id="app">
+        <div id="content">
+            @yield('content')
+        </div>
     </div>
-</div>
+    <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 
 </html>

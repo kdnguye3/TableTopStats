@@ -14,7 +14,7 @@ class ImportStatsSeeder extends Seeder
      */
     public function run()
     {
-        $json = json_decode(file_get_contents('./database/seeds/BGStatsExport2.json'),true);
+        $json = json_decode(file_get_contents('./database/seeds/BGStatsExport.json'),true);
         //dd($json['plays'][3]);
         foreach ($json['games'] as $game){
             Game::firstOrCreate(['id'=>$game['id'],'name'=>$game['name']]);

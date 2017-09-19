@@ -19,16 +19,7 @@ class PlayerAPIController extends Controller
 
     public function index()
     {
-        $players = Player::all();
-        $player_array = collect();
-        foreach ($players as $player){
-            $player = $this->playerService->publishStats($player);
-            $player_array->push($player) ;
-        }
-        $array = $player_array->filter(function($player){
-            return $player->play_count>=10;
-        })->sortByDesc('adjusted_win_rate')->toArray();
-        return response()->json((array_values($array)));
+        return response()->json($this->playerService->getPlayers());
     }
 
     public function getPlayers()
