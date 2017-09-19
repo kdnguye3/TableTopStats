@@ -17,6 +17,10 @@ class Player extends Model
         return $this->belongsToMany(\App\Play::class)->withPivot('place');
     }
 
+    public function groups(){
+        return $this->belongsToMany(\App\Group::class);
+    }
+
     public function wins() {
         $wins = 0;
         foreach ($this->plays as $play){
@@ -27,8 +31,13 @@ class Player extends Model
         return $wins;
     }
 
-    public function scopeLeague($query)
-    {
-        return $query->whereIn('name', ['Alex','Roshal','Angie','Rishi','Chris Mayer','Kristie','Kevin','Sabiha','Ramail'] );
+
+    //should take in group
+    public function scopeGroup($query, Group $group) {
+        return $query->whereHas('groups',function($query) use ($group){
+            $query->where('groups.id',$group->id);
+        });
     }
+
+
 }

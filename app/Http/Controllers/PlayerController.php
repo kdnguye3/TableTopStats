@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Group;
 use App\Services\PlayerService;
 use Illuminate\Http\Request;
 use App\Player;
@@ -91,6 +92,7 @@ class PlayerController extends Controller
 
     public function json()
     {
-        return response()->json($this->playerService->getPlayers());
+
+        return response()->json($this->playerService->getPlayers(Group::find(1)));
     }
 }

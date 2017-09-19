@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+use App\Group;
+use App\Play;
 use App\Player;
 
 
@@ -15,13 +17,25 @@ class PlayerService
         return $wins;
     }
 
-    public function eligiblePlayers () {
-        return Player::has('plays','>=',10);
-    }
 
 
-    public function getPlayers(){
-        $players = $this->eligiblePlayers()->with('plays')->get();
+    public function getPlayers($group = null){
+        //get players in group
+        //filter out plays that dont contain at least 3 members of the group
+
+        $group_names = $group->players()->pluck('name');
+
+        $players = $group ?  Player::group($group)->with(['plays' => function ($query) use ($group_names) {
+            return $query->whereHas('players',function($query) use ($group_names) {
+                $query->whereIn('name' ,$group_names);
+            },'>=',3);
+                /*->whereHas('players',function($query) use ($group_names) {
+                $query->whereNotIn('name' ,$group_names);
+            },'=',0);*/
+        }
+        ])->get()
+            : Player::with('plays')->get();
+       // $players = Player::group($group)->with('plays')->get();
         $output = collect();
         foreach ($players as $player){
             $opponents = 0;
@@ -33,15 +47,18 @@ class PlayerService
                 $wins += $play->pivot->place;
                 $play_count += 1;
             }
-            $player->wins = $wins;
-            $player->opponents = $opponents;
-            $player->play_count = $play_count;
-            $player->expected_win_rate = 1/($opponents/$play_count);
-            $player->win_rate = $wins/$player->play_count;
-            $player->adjusted_win_rate = $player->win_rate/$player->expected_win_rate;
-            $player->expected_wins = $player->expected_win_rate * $play_count;
-            $player->woe = $player->wins - $player->expected_wins;
-            $output->push($player);
+            if (count($player->plays)){
+                $player->wins = $wins;
+                $player->opponents = $opponents;
+                $player->play_count = $play_count;
+                $player->expected_win_rate = 1/($opponents/$play_count);
+                $player->win_rate = $wins/$player->play_count;
+                $player->adjusted_win_rate = $player->win_rate/$player->expected_win_rate;
+                $player->expected_wins = $player->expected_win_rate * $play_count;
+                $player->woe = $player->wins - $player->expected_wins;
+                $output->push($player);
+            }
+
         }
         return array_values($output->sortByDesc('adjusted_win_rate')->toArray());
     }
