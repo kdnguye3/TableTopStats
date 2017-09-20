@@ -18,8 +18,12 @@
     @yield('head')
 </head>
 <body id="app-layout">
-
     <div id="app">
+        <nav class="navbar is-success" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                Board Game League
+            </div>
+        </nav>
         <div id="content">
             @yield('content')
         </div>
