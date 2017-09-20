@@ -90,9 +90,18 @@ class PlayerController extends Controller
         //
     }
 
-    public function json()
-    {
 
-        return response()->json($this->playerService->getPlayers(Group::find(1)));
+
+    public function json(Request $request)
+    {
+        $result = collect();
+        $season = intval($request->season);
+        //validate turn group/season to ints
+        $group = $request->group ? Group::find($request->group) : null;
+        $result['players'] = $this->playerService->getPlayers($group, $season);
+        $result['groups'] = Group::all();
+        $result['group'] = intval($request->group);
+        $result['season'] = $season;
+        return response()->json($result);
     }
 }
