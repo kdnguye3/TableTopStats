@@ -953,21 +953,6 @@
       "designers" : "Anthony J. Gallela, Eric Goldberg, Kevin Maroney, Zev Shlasinger"
     },
     {
-      "id" : 64,
-      "uuid" : "F7FCF30B-D8B4-4202-B924-90E00B195CA5",
-      "noPoints" : false,
-      "highestWins" : true,
-      "cooperative" : false,
-      "urlThumb" : "https:\/\/cf.geekdo-images.com\/images\/pic2602154_t.jpg",
-      "modificationDate" : "2016-12-14 13:11:53",
-      "usesTeams" : false,
-      "bggId" : 91072,
-      "bggName" : "Saboteur 2 (expansion-only editions)",
-      "bggYear" : 2011,
-      "name" : "Saboteur 2 (expansion-only editions)",
-      "designers" : "Fréderic Moyersoen"
-    },
-    {
       "id" : 65,
       "uuid" : "D994016C-42AF-4585-8024-7AB6ACAA38A4",
       "noPoints" : false,
@@ -19844,26 +19829,6 @@
       "durationMin" : 0,
       "nemestatsId" : 0,
       "gameRefId" : 32
-    },
-    {
-      "rating" : 0,
-      "uuid" : "7E25F472-7536-4B6A-8354-4A63A49CDF21",
-      "ignored" : false,
-      "scoringSetting" : 0,
-      "playerScores" : [
-
-      ],
-      "modificationDate" : "2017-02-22 21:55:48",
-      "playDate" : "2016-07-10 10:00:00",
-      "manualWinner" : false,
-      "rounds" : 0,
-      "usesTeams" : false,
-      "bggId" : 19310306,
-      "entryDate" : "2017-02-22 21:55:48",
-      "playImages" : "[]",
-      "durationMin" : 0,
-      "nemestatsId" : 0,
-      "gameRefId" : 64
     },
     {
       "rating" : 0,

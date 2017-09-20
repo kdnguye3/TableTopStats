@@ -5,6 +5,7 @@ use App\Group;
 use App\Services\PlayerService;
 use Illuminate\Http\Request;
 use App\Player;
+use GuzzleHttp;
 
 class PlayerController extends Controller
 {

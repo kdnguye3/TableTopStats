@@ -12,10 +12,12 @@
 */
 
 Route::get('/', function() {
-    return redirect(route('games.index'));
+    return redirect(route('players.index'));
 });
 Route::resource('games', 'GameController');
+Route::get('players/json','PlayerController@json');
 Route::post('players/json','PlayerController@json');
+
 
 Route::resource('players', 'PlayerController');
 
