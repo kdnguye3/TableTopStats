@@ -46,12 +46,12 @@
                 <td>{{player.name}}</td>
                 <td>{{player.play_count}}</td>
                 <td>{{player.wins}}</td>
-                <td>{{player.win_rate | round }}%</td>
-                <td>{{player.new_play_count}}</td>
-                <td>{{player.new_wins}}</td>
-                <td>{{player.new_win_rate | round}}%</td>
-                <td>{{player.new_expected_win_rate | round}}%</td>
-                <td>{{player.new_adjusted_win_rate | round}}%</td>
+                <td>{{player.win_rate | percent }}%</td>
+                <td>{{player.new_play_count | round}}</td>
+                <td>{{player.new_wins | round}}</td>
+                <td>{{player.new_win_rate | percent}}%</td>
+                <td>{{player.new_expected_win_rate | percent}}%</td>
+                <td>{{player.new_adjusted_win_rate | percent}}%</td>
             </tr>
         </table>
     </div>
@@ -63,9 +63,15 @@
             return {players: [], groups: [], group_value: 0, season: 0}
         },
         filters: {
-            round: function (value) {
+            percent: function (value) {
                 var factor = Math.pow(10, 2);
                 var tempNumber = value * 100 * factor;
+                var roundedTempNumber = Math.round(tempNumber);
+                return roundedTempNumber / factor ;
+            },
+            round: function (value) {
+                var factor = Math.pow(10, 2);
+                var tempNumber = value  * factor;
                 var roundedTempNumber = Math.round(tempNumber);
                 return roundedTempNumber / factor ;
             }
