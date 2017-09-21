@@ -1,49 +1,61 @@
-
 <template>
     <div class="box">
-        <div class="field">
-            <label class="label">Group</label>
-            <div class="control">
-                <div class="select" >
-                    <select v-on:change="submit()" v-model="group_value">
-                        <option :value="0">
-                            All Players
-                        </option>
-                        <option :value="group.id"  v-for="group in groups">
-                            {{group.name}}
-                        </option>
-                    </select>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Group</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select v-on:change="submit()" v-model="group_value">
+                                    <option :value="0">
+                                        All Players
+                                    </option>
+                                    <option :value="group.id" v-for="group in groups">
+                                        {{group.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="field">
-            <label class="label">Season</label>
-            <div class="control">
-                <div class="select">
-                    <select v-on:change="submit()" v-model="season">
-                        <option value="0">All years</option>
-                        <option value="1">Season 0</option>
-                        <option value="2">Season 1</option>
-                    </select>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Season</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select v-on:change="submit()" v-model="season">
+                                    <option value="0">All years</option>
+                                    <option value="1">Season 0</option>
+                                    <option value="2">Season 1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
         <table class="table">
             <thead>
-                <th>Placement</th>
-                <th>Player Name</th>
-                <th>Plays</th>
-                <th>Wins</th>
-                <th>Win Rate</th>
-                <th>Adjusted Plays</th>
-                <th>Adjusted Wins</th>
-                <th>Adjusted Win Rate</th>
-                <th>Expected Win Rate</th>
-                <th>POE</th>
+            <th>Placement</th>
+            <th>Player Name</th>
+            <th>Plays</th>
+            <th>Wins</th>
+            <th>Win Rate</th>
+            <th>Adjusted Plays</th>
+            <th>Adjusted Wins</th>
+            <th>Adjusted Win Rate</th>
+            <th>Expected Win Rate</th>
+            <th>POE</th>
             </thead>
             <tr v-for="(player,index) in players">
                 <th>{{index + 1}}</th>
-                <td>{{player.name}}</td>
+                <td><a v-bind:href="'/players/'+ player.id">{{player.name}}</a></td>
                 <td>{{player.play_count}}</td>
                 <td>{{player.wins}}</td>
                 <td>{{player.win_rate | percent }}%</td>
@@ -67,20 +79,20 @@
                 var factor = Math.pow(10, 2);
                 var tempNumber = value * 100 * factor;
                 var roundedTempNumber = Math.round(tempNumber);
-                return roundedTempNumber / factor ;
+                return roundedTempNumber / factor;
             },
             round: function (value) {
                 var factor = Math.pow(10, 2);
-                var tempNumber = value  * factor;
+                var tempNumber = value * factor;
                 var roundedTempNumber = Math.round(tempNumber);
-                return roundedTempNumber / factor ;
+                return roundedTempNumber / factor;
             }
         },
 
         created() {
-            axios.post('/players/json',{
-                'group' : this.group_value,
-                'season' : this.season
+            axios.post('/players/json', {
+                'group': this.group_value,
+                'season': this.season
             }).then(response => {
                     this.players = response.data.players;
                     this.groups = response.data.groups;
@@ -93,16 +105,16 @@
         methods: {
             submit() {
                 console.log("posted", this.season, this.group_value);
-                axios.post('/players/json',{
-                    'group' : this.group_value,
-                    'season' : this.season
+                axios.post('/players/json', {
+                    'group': this.group_value,
+                    'season': this.season
                 }).then(response => {
-                    console.log("receive", response.data);
+                        console.log("receive", response.data);
 
-                    this.players = response.data.players;
-                    this.groups = response.data.groups;
-                    this.group_value = response.data.group;
-                    this.season = response.data.season;
+                        this.players = response.data.players;
+                        this.groups = response.data.groups;
+                        this.group_value = response.data.group;
+                        this.season = response.data.season;
                     }
                 );
             }

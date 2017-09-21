@@ -5,10 +5,10 @@
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
-                    Leaderboard
+                    Plays
                 </h1>
             </div>
         </div>
     </section>
-    <leaderboard/>
+    <playertable :id="{{$id}}"></playertable>
 @endsection

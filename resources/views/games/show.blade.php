@@ -6,6 +6,7 @@
             <h3>
                 Games Show
             </h3>
+            <playertable :id=""></playertable>
         </div>
     </div>
 @endsection

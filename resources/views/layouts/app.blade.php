@@ -19,14 +19,27 @@
 </head>
 <body id="app-layout">
     <div id="app">
-        <nav class="navbar is-success" role="navigation" aria-label="main navigation">
+        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                Board Game League
+                <a class="navbar-item" href="http://bulma.io">
+                    <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+                </a>
+                <button class="button navbar-burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/players">Players</a>
+                </div>
             </div>
         </nav>
         <div id="content">
             @yield('content')
         </div>
+
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
 

@@ -54,7 +54,7 @@ class PlayerController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('players.show',['id'=>$id]);
     }
 
     /**
@@ -101,6 +101,18 @@ class PlayerController extends Controller
         $group = $request->group ? Group::find($request->group) : null;
         $result['players'] = $this->playerService->getPlayers($group, $season);
         $result['groups'] = Group::all();
+        $result['group'] = intval($request->group);
+        $result['season'] = $season;
+        return response()->json($result);
+    }
+
+    public function playerjson(Player $player,Request $request )
+    {
+        $result = collect();
+        $season = intval($request->season);
+        $group = $request->group ? Group::find($request->group) : null;
+        $result['plays'] = $this->playerService->getPlays($player, $group, $season);
+        $result['groups'] = $player->groups;
         $result['group'] = intval($request->group);
         $result['season'] = $season;
         return response()->json($result);

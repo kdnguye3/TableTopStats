@@ -41,14 +41,14 @@ class ImportStatsSeeder extends Seeder
             $weight= $array['item'][$key]['statistics']['ratings']['averageweight']['@attributes']['value'];
             Game::firstOrCreate(['id'=>$game['id'],'name'=>$game['name'],'weight' => $weight]);
         }
+        $huh = Game::where('name','Huh?')->first();
+        $huh->weight = 1.00;
+        $huh->save();
         foreach ($json['players'] as $player){
             Player::firstOrCreate(['id'=>$player['id'],'name'=>$player['name']]);
         }
 
         foreach ($json['plays'] as $play){
-            // if
-           // dd($play['playDate']);
-
             if ($play['gameRefId'] === 20){
                 $newPlay = Play::firstOrCreate(['uuid' => $play['uuid'],'play_date'=>$play['playDate'],'ignored'=>$play['ignored'],'game_id'=>$play['gameRefId'],'teams'=>  4 ]);
             }

@@ -17,8 +17,7 @@ Route::get('/', function() {
 Route::resource('games', 'GameController');
 Route::get('players/json','PlayerController@json');
 Route::post('players/json','PlayerController@json');
-
-
+Route::post('players/{player}/json','PlayerController@playerJson');
 Route::resource('players', 'PlayerController');
 
 

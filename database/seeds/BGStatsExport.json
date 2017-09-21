@@ -3136,7 +3136,7 @@
           "newPlayer" : false
         },
         {
-          "winner" : false,
+          "winner" : true,
           "seatOrder" : 0,
           "score" : "",
           "startPlayer" : false,
@@ -3146,7 +3146,7 @@
           "newPlayer" : false
         },
         {
-          "winner" : true,
+          "winner" : false,
           "seatOrder" : 0,
           "score" : "",
           "startPlayer" : false,
@@ -3156,8 +3156,8 @@
           "newPlayer" : false
         }
       ],
-      "modificationDate" : "2017-09-18 23:16:35",
-      "bggLastSync" : "2017-09-18 23:16:35",
+      "modificationDate" : "2017-09-20 22:53:05",
+      "bggLastSync" : "2017-09-20 22:53:05",
       "playDate" : "2017-09-18 23:16:32",
       "manualWinner" : true,
       "rounds" : 0,

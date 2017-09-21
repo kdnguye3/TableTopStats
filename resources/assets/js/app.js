@@ -6,7 +6,6 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
 /**
@@ -17,6 +16,8 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('leaderboard', require('./components/Leaderboard.vue'));
+Vue.component('playertable', require('./components/Playertable.vue'));
+
 
 
 const app = new Vue({
