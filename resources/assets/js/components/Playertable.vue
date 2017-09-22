@@ -50,7 +50,7 @@
             <div class="column">
                 <section class="panel">
                     <p class="panel-heading" v-if="player">{{player.name}}'s plays</p>
-                    <div class="panel-block">
+                    <div class="panel-block leaderboard-panel-body">
                         <table class="table">
                             <thead>
                                 <th>Game</th>
