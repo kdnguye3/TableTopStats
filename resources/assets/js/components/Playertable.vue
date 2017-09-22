@@ -1,9 +1,9 @@
 
 <template>
-    <div class="container is-widescreen">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
+    <div class="container is-fluid">
+        <nav class="breadcrumb" aria-label="breadcrumbs" id="breadcrumbs-container">
             <ul>
-                <li><a href="/players">Players</a></li>
+                <li><a href="/players">Leaderboard</a></li>
                 <li class="is-active"><a href="#">Player</a></li>
             </ul>
         </nav>

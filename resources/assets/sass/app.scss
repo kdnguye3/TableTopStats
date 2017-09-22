@@ -5,7 +5,6 @@
 // Variables
 @import "variables";
 
-// Bootstrap
 @import "node_modules/bulma/bulma";
 
 
@@ -15,4 +14,16 @@
 
 .navbar-burger:hover {
   background-color:rgb(219, 219, 219);
+}
+
+.leaderboard{
+  font-size: 0.85rem;
+}
+
+.leaderboard-panel-body{
+  overflow-x:scroll;
+}
+
+#breadcrumbs-container {
+  margin-bottom: 0px;
 }

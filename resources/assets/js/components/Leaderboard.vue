@@ -1,71 +1,83 @@
 <template>
-    <div class="box">
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Group</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <div class="select">
-                                <select v-on:change="submit()" v-model="group_value">
-                                    <option :value="0">
-                                        All Players
-                                    </option>
-                                    <option :value="group.id" v-for="group in groups">
-                                        {{group.name}}
-                                    </option>
-                                </select>
+    <div class="container is-fluid">
+        <nav class="breadcrumb" aria-label="breadcrumbs" id="breadcrumbs-container">
+            <ul>
+                <li class="is-active"><a href="/players">Leaderboard</a></li>
+            </ul>
+        </nav>
+        <div class="columns">
+            <div class="column is-one-quarter">
+                <section class="panel">
+                    <p class="panel-heading">
+                        Filters
+                    </p>
+                    <div class="panel-block">
+                        <form class="control">
+                            <div class="field">
+                                <label class="label">Group</label>
+                                <div class="control">
+                                    <div class="select" >
+                                        <select v-on:change="submit()" v-model="group_value">
+                                            <option :value="0">
+                                                All Players
+                                            </option>
+                                            <option :value="group.id"  v-for="group in groups">
+                                                {{group.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">Season</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <div class="select">
-                                <select v-on:change="submit()" v-model="season">
-                                    <option value="0">All years</option>
-                                    <option value="1">Season 0</option>
-                                    <option value="2">Season 1</option>
-                                </select>
+                            <div class="field">
+                                <label class="label" style="padding-top:7px;">Season</label>
+                                <div class="control">
+                                    <div class="select">
+                                        <select v-on:change="submit()" v-model="season">
+                                            <option value="0">All years</option>
+                                            <option value="1">Season 0</option>
+                                            <option value="2">Season 1</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </div>
+                </section>
             </div>
-
-        <table class="table">
-            <thead>
-            <th>Placement</th>
-            <th>Player Name</th>
-            <th>Plays</th>
-            <th>Wins</th>
-            <th>Win Rate</th>
-            <th>Adjusted Plays</th>
-            <th>Adjusted Wins</th>
-            <th>Adjusted Win Rate</th>
-            <th>Expected Win Rate</th>
-            <th>POE</th>
-            </thead>
-            <tr v-for="(player,index) in players">
-                <th>{{index + 1}}</th>
-                <td><a v-bind:href="'/players/'+ player.id">{{player.name}}</a></td>
-                <td>{{player.play_count}}</td>
-                <td>{{player.wins}}</td>
-                <td>{{player.win_rate | percent }}%</td>
-                <td>{{player.new_play_count | round}}</td>
-                <td>{{player.new_wins | round}}</td>
-                <td>{{player.new_win_rate | percent}}%</td>
-                <td>{{player.new_expected_win_rate | percent}}%</td>
-                <td>{{player.new_adjusted_win_rate | percent}}%</td>
-            </tr>
-        </table>
+            <div class="column">
+                <section class="panel">
+                    <p class="panel-heading"> Leaderboard</p>
+                    <div class="panel-block leaderboard-panel-body">
+                        <table class="table is-narrower leaderboard">
+                            <thead>
+                            <th>Place</th>
+                            <th>Player Name</th>
+                            <th>Plays</th>
+                            <th>Wins</th>
+                            <th>Win Rate</th>
+                            <th>Adjusted Plays</th>
+                            <th>Adjusted Wins</th>
+                            <th>Adjusted Win Rate</th>
+                            <th>Expected Win Rate</th>
+                            <th>POE</th>
+                            </thead>
+                            <tr v-for="(player,index) in players">
+                                <th>{{index + 1}}</th>
+                                <td><a v-bind:href="'/players/'+ player.id">{{player.name}}</a></td>
+                                <td>{{player.play_count}}</td>
+                                <td>{{player.wins}}</td>
+                                <td>{{player.win_rate | percent }}%</td>
+                                <td>{{player.new_play_count | round}}</td>
+                                <td>{{player.new_wins | round}}</td>
+                                <td>{{player.new_win_rate | percent}}%</td>
+                                <td>{{player.new_expected_win_rate | percent}}%</td>
+                                <td>{{player.new_adjusted_win_rate | percent}}%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
     </div>
 </template>
 
