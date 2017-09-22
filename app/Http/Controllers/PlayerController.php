@@ -115,6 +115,7 @@ class PlayerController extends Controller
         $result['groups'] = $player->groups;
         $result['group'] = intval($request->group);
         $result['season'] = $season;
+        $result['player'] = $player;
         return response()->json($result);
     }
 }

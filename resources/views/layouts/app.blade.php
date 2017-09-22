@@ -21,9 +21,12 @@
     <div id="app">
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="http://bulma.io">
-                    <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
-                </a>
+                <div class="navbar-item">
+                    <img src="{{url('/img/Chess-Game-grey.png')}}" alt="BG League" height="20" />
+                    <div class="site-title" style="padding-left: 5px">
+                        Game Stats
+                    </div>
+                </div>
                 <button class="button navbar-burger">
                     <span></span>
                     <span></span>
