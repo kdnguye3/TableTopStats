@@ -65,12 +65,12 @@ class PlayerService
         return array_values($output->sortByDesc('new_adjusted_win_rate')->toArray());
     }
 
-    public function filterPlays($group, $season, $player = null)
+    public function filterPlays($group, $season)
     {
         $group_names = null;
         $startDate = null;
         $endDate = null;
-        //dd($group,$season,$player);
+
         if ($group) {
             $group_names = $group->players()->pluck('name');
         }

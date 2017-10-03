@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{url('/img/chess_game_grey_3Jh_icon.ico')}}" type="image/x-icon" rel="shortcut icon"  />
+
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -36,6 +38,8 @@
             <div class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="/players">Players</a>
+                    <a class="navbar-item" href="/games">Games</a>
+
                 </div>
             </div>
         </nav>

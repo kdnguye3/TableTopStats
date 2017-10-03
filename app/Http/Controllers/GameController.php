@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use App\Services\GameService;
 use Illuminate\Http\Request;
+use App\Group;
 
 class GameController extends Controller
 {
+    private $gameService;
+
+    public function __construct(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        return view("games.index", ["games"=>Game::all()]);
+        return view("games.index");
     }
 
     /**
@@ -44,9 +52,9 @@ class GameController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        return view('games.show',['id'=>$id,'group'=>$request->group,'season'=>$request->season]);
     }
 
     /**
@@ -81,5 +89,34 @@ class GameController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //show games /complexity
+
+
+    public function json(Request $request)
+    {
+        $result = collect();
+        $season = intval($request->season);
+        //validate turn group/season to ints
+        $group = $request->group ? Group::find($request->group) : null;
+        $result['games'] = $this->gameService->getGames($group, $season);
+        $result['groups'] = Group::all();
+        $result['group'] = intval($request->group);
+        $result['season'] = $season;
+        return response()->json($result);
+    }
+
+    public function gamejson(Game $game,Request $request )
+    {
+        $result = collect();
+        $season = intval($request->season);
+        $group = $request->group ? Group::find($request->group) : null;
+        $result['players'] = $this->gameService->getPlayers($game, $group, $season);
+        $result['groups'] = Group::all();
+        $result['group'] = intval($request->group);
+        $result['season'] = $season;
+        $result['game'] = $game;
+        return response()->json($result);
     }
 }

@@ -40,6 +40,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="field">
+                                <label class="label" style="padding-top:7px;">Minimum Plays</label>
+                                <div class="control">
+                                    <input class="input" type="text" v-model="min_plays"/>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </section>
@@ -61,9 +67,9 @@
                             <th>Expected Win Rate</th>
                             <th>POE</th>
                             </thead>
-                            <tr v-for="(player,index) in players">
+                            <tr v-for="(player,index) in filtered_player_list">
                                 <th>{{index + 1}}</th>
-                                <td><a v-bind:href="'/players/'+ player.id">{{player.name}}</a></td>
+                                <td><a v-bind:href="'/players/'+ player.id + '?group=' + group_value + '&season=' + season">{{player.name}}</a></td>
                                 <td>{{player.play_count}}</td>
                                 <td>{{player.wins}}</td>
                                 <td>{{player.win_rate | percent }}%</td>
@@ -84,7 +90,7 @@
 <script>
     export default {
         data() {
-            return {players: [], groups: [], group_value: 0, season: 0}
+            return {players: [], groups: [], group_value: 0, season: 0, min_plays: 5}
         },
         filters: {
             percent: function (value) {
@@ -98,6 +104,16 @@
                 var tempNumber = value * factor;
                 var roundedTempNumber = Math.round(tempNumber);
                 return roundedTempNumber / factor;
+            }
+        },
+        computed: {
+            filtered_player_list: function() {
+                return this.players.filter(
+                    (player) => {
+                        //TODO have filter only accept numbers
+                        return player.play_count >= this.min_plays
+                    }
+                );
             }
         },
 

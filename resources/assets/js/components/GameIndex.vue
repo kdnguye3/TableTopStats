@@ -1,10 +1,8 @@
-
 <template>
     <div class="container is-fluid">
         <nav class="breadcrumb" aria-label="breadcrumbs" id="breadcrumbs-container">
             <ul>
-                <li><a href="/players">Leaderboard</a></li>
-                <li class="is-active"><a href="#">Player</a></li>
+                <li class="is-active"><a href="/games">Games</a></li>
             </ul>
         </nav>
         <div class="columns">
@@ -15,7 +13,7 @@
                     </p>
                     <div class="panel-block">
                         <form class="control">
-                            <field name="group-field">
+                            <div class="field">
                                 <label class="label">Group</label>
                                 <div class="control">
                                     <div class="select" >
@@ -29,8 +27,8 @@
                                         </select>
                                     </div>
                                 </div>
-                            </field>
-                            <field name="season-field">
+                            </div>
+                            <div class="field">
                                 <label class="label" style="padding-top:7px;">Season</label>
                                 <div class="control">
                                     <div class="select">
@@ -41,32 +39,37 @@
                                         </select>
                                     </div>
                                 </div>
-                            </field>
+                            </div>
+                            <div class="field">
+                                <label class="label" style="padding-top:7px;">Minimum Plays</label>
+                                <div class="control">
+                                    <input class="input" type="text" v-model="min_plays"/>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label" style="padding-top:7px;">Minimum Weight</label>
+                                <div class="control">
+                                    <input class="input" type="text" v-model="min_weight"/>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </section>
             </div>
-
             <div class="column">
                 <section class="panel">
-                    <p class="panel-heading" v-if="player">{{player.name}}'s plays</p>
+                    <p class="panel-heading">Games List</p>
                     <div class="panel-block leaderboard-panel-body">
-                        <table class="table">
+                        <table class="table leaderboard">
                             <thead>
-                                <th>Game</th>
+                                <th>Name</th>
                                 <th>Plays</th>
-                                <th>Wins</th>
-                                <th>Win Rate</th>
-                                <th>Adjusted Plays</th>
-                                <th>Adjusted Wins</th>
+                                <th>Complexity</th>
                             </thead>
-                            <tr v-for="game in plays">
-                                <td>{{game.name}}</td>
+                            <tr v-for="game in filtered_game_list">
+                                <td><a :href="'/games/'+ game.id + '?group=' + group_value + '&season=' + season">{{game.name}}</a></td>
                                 <td>{{game.play_count}}</td>
-                                <td>{{game.wins}}</td>
-                                <td>{{game.win_rate | percent }}%</td>
-                                <td>{{game.new_play_count | round}}</td>
-                                <td>{{game.new_wins | round}}</td>
+                                <td>{{game.weight}}</td>
                             </tr>
                         </table>
                     </div>
@@ -78,54 +81,48 @@
 
 <script>
     export default {
-        props:['id','initialGroup','initialSeason'],
         data() {
-
-            return {plays: [], groups: [], group_value: this.initialGroup || 0, season: this.initialSeason || 0, player: 0}
+            return {games: [], groups: [], group_value: 0, season: 0, min_plays: 0, min_weight: 0}
         },
-        filters: {
-            percent: function (value) {
-                var factor = Math.pow(10, 2);
-                var tempNumber = value * 100 * factor;
-                var roundedTempNumber = Math.round(tempNumber);
-                return roundedTempNumber / factor ;
-            },
-            round: function (value) {
-                var factor = Math.pow(10, 2);
-                var tempNumber = value  * factor;
-                var roundedTempNumber = Math.round(tempNumber);
-                return roundedTempNumber / factor ;
+        computed: {
+            filtered_game_list: function() {
+                return this.games.filter(
+                    (game) => {
+                        //TODO have filter only accept numbers
+                        return game.play_count >= this.min_plays && game.weight > this.min_weight;
+                    }
+                );
             }
         },
 
-
         created() {
-            axios.post('/players/' + this.id + '/json',{
-                'group' : this.group_value,
-                'season' : this.season
+            axios.post('/games/json', {
+                'group': this.group_value,
+                'season': this.season
             }).then(response => {
-                    this.plays = response.data.plays;
+                    this.games = response.data.games;
                     this.groups = response.data.groups;
                     this.group_value = response.data.group;
                     this.season = response.data.season;
-                    this.player = response.data.player
                 }
             );
         },
 
         methods: {
             submit() {
-                axios.post('/players/'+ this.id +'/json',{
-                    'group' : this.group_value,
-                    'season' : this.season
+                console.log("posted", this.season, this.group_value);
+                axios.post('/games/json', {
+                    'group': this.group_value,
+                    'season': this.season
                 }).then(response => {
-                    this.plays = response.data.plays;
-                    this.groups = response.data.groups;
-                    this.group_value = response.data.group;
-                    this.season = response.data.season;
-                    this.player = response.data.player
+                        console.log("receive", response.data);
 
-                });
+                        this.games = response.data.games;
+                        this.groups = response.data.groups;
+                        this.group_value = response.data.group;
+                        this.season = response.data.season;
+                    }
+                );
             }
         }
 

@@ -52,9 +52,9 @@ class PlayerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request )
     {
-        return view('players.show',['id'=>$id]);
+        return view('players.show',['id'=>$id,'group'=>$request->group,'season'=>$request->season]);
     }
 
     /**

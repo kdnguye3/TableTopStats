@@ -18,6 +18,10 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('leaderboard', require('./components/Leaderboard.vue'));
 Vue.component('playertable', require('./components/Playertable.vue'));
+Vue.component('gameindex', require('./components/GameIndex.vue'));
+Vue.component('gametable', require('./components/GameTable.vue'));
+
+
 
 
 
