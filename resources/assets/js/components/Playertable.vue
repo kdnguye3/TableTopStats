@@ -50,8 +50,8 @@
             <div class="column">
                 <section class="panel">
                     <p class="panel-heading" v-if="player">{{player.name}}'s plays</p>
-                    <div class="panel-block leaderboard-panel-body">
-                        <table class="table">
+                    <div class="panel-block table-panel-body"  v-bind:class="{ 'is-loading' : loading}">
+                        <table class="table" >
                             <thead>
                                 <th>Game</th>
                                 <th>Plays</th>
@@ -81,7 +81,7 @@
         props:['id','initialGroup','initialSeason'],
         data() {
 
-            return {plays: [], groups: [], group_value: this.initialGroup || 0, season: this.initialSeason || 0, player: 0}
+            return {plays: [], groups: [], group_value: this.initialGroup || 0, season: this.initialSeason || 0, player: 0,  loading:true}
         },
         filters: {
             percent: function (value) {
@@ -104,6 +104,7 @@
                 'group' : this.group_value,
                 'season' : this.season
             }).then(response => {
+                    this.loading = false;
                     this.plays = response.data.plays;
                     this.groups = response.data.groups;
                     this.group_value = response.data.group;
@@ -115,10 +116,13 @@
 
         methods: {
             submit() {
+                this.loading=true;
                 axios.post('/players/'+ this.id +'/json',{
                     'group' : this.group_value,
                     'season' : this.season
                 }).then(response => {
+                    this.loading = false;
+
                     this.plays = response.data.plays;
                     this.groups = response.data.groups;
                     this.group_value = response.data.group;

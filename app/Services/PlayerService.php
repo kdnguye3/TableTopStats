@@ -33,7 +33,26 @@ class PlayerService
             $new_play_count = 0;
             $new_wins = 0;
             $new_opponents = 0;
+            $chart_data = collect();
+            $last_date = Carbon::parse($player->plays[0]->play_date);
+            $same_date = false;
+            $current_date = null;
+            $i= 0;
             foreach ($player->plays as $play) {
+
+                $current_date = Carbon::parse($play->play_date);
+                if (!$current_date->isSameDay($last_date) && $play_count !=0){
+                    $chart_data->push(['x'=>$player->plays[$i-1]->play_date, 'y'=> $wins/$play_count]);
+                    //dd($play->play_date,$wins/$play_count);
+                    $same_date = false;
+                    if ($player->name == "Chris Mayer"){
+                       // dd($current_date,$last_date);
+                    }
+                }
+                else{
+                    $same_date = true;
+                }
+                $last_date = Carbon::parse($play->play_date);
                 $opponents_in_game = $play->teams ? $play->teams : count($play->players);
                 $opponents += $opponents_in_game;
                 $wins += $play->pivot->place;
@@ -41,8 +60,12 @@ class PlayerService
                 $new_opponents += $opponents_in_game * $play->game->weight;
                 $new_play_count += $play->game->weight;
                 $new_wins += $play->pivot->place * $play->game->weight;
-
+                $i++;
             }
+            if ($same_date){
+                $chart_data->push(['x'=>$player->plays[count($player->plays)-1]->play_date, 'y'=> $wins/$play_count]);
+            }
+
             if (count($player->plays)) {
                 $player->wins = $wins;
                 $player->opponents = $opponents;
@@ -57,6 +80,7 @@ class PlayerService
                 $player->new_expected_win_rate = ($new_play_count / $play_count) / ($new_opponents / $new_play_count);
                 $player->new_win_rate = $new_wins / $new_play_count;
                 $player->new_adjusted_win_rate = $player->new_win_rate / $player->new_expected_win_rate;
+                $player->chart_data = $chart_data;
 
                 $output->push($player);
             }
@@ -86,13 +110,13 @@ class PlayerService
                 return $startDate ? $query->where('play_date', '>', $startDate)->where('play_date', '<', $endDate)
                     ->whereHas('players', function ($query) use ($group_names) {
                         $query->whereIn('name', $group_names);
-                    }, '>=', 3)
+                    }, '>=', 3)->orderBy('play_date')
                     : $query->whereHas('players', function ($query) use ($group_names) {
                         $query->whereIn('name', $group_names);
-                    }, '>=', 3);
+                    }, '>=', 3)->orderBy('play_date');
             }])->get()
                 : Player::with(['plays' => function ($query) use ($startDate, $endDate) {
-                    return $startDate ? $query->where('play_date', '>', $startDate)->where('play_date', '<', $endDate) : $query;
+                    return $startDate ? $query->where('play_date', '>', $startDate)->where('play_date', '<', $endDate)->orderBy('play_date') : $query->orderBy('play_date');
                 }])->get();
 
         return $players;
@@ -135,7 +159,6 @@ class PlayerService
         $endDate = null;
 
         $plays = $this->filterPlays2($group, $season, $player);
-
         $games = collect();
         foreach ($plays as $play) {
             //if game name is set add to it
@@ -178,4 +201,5 @@ class PlayerService
         return 1 / ($opponents / count($player->plays));
 
     }
+
 }

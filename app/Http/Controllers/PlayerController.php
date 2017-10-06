@@ -118,4 +118,16 @@ class PlayerController extends Controller
         $result['player'] = $player;
         return response()->json($result);
     }
+
+    public function chartJson(Request $request)
+    {
+        $result = collect();
+        //$season = intval($request->season);
+        //$group = $request->group ? Group::find($request->group) : null;
+        //$result['players'] = $this->playerService->getPlayers($group, $season);
+        //$result['groups'] = Group::all();
+        //$result['group'] = intval($request->group);
+        //$result['season'] = $season;
+        return response()->json($result);
+    }
 }

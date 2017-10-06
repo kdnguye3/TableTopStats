@@ -50,10 +50,28 @@
                     </div>
                 </section>
             </div>
-            <div class="column">
+
+            <div class="column is-three-quarters">
                 <section class="panel">
                     <p class="panel-heading"> Leaderboard</p>
-                    <div class="panel-block leaderboard-panel-body">
+                    <div class="panel-block"  v-bind:class="{ 'is-loading' : loading}" v-if="group_value" style="height:500px">
+                            <line-chart :chart-data="chart_data" :options="{
+                                    elements: {
+                                        line: {
+                                            tension: 0
+                                        }
+                                    },
+                                    scales: {
+                                        xAxes: [{
+                                        type: 'time',
+                                        scaleLabel: {
+                                        labelString: 'Date'
+                                    }
+                                }],
+                        }}">
+                            </line-chart>
+                    </div>
+                    <div class="panel-block table-panel-body"  v-bind:class="{ 'is-loading' : loading}">
                         <table class="table is-narrower leaderboard">
                             <thead>
                             <th>Place</th>
@@ -88,9 +106,14 @@
 </template>
 
 <script>
+    import LineChart from './LineChart.js'
+
     export default {
+        components: {
+            LineChart
+        },
         data() {
-            return {players: [], groups: [], group_value: 0, season: 0, min_plays: 5}
+            return {players: [], groups: [], group_value: 0, season: 0, min_plays: 5, loading:true, chart_data: null}
         },
         filters: {
             percent: function (value) {
@@ -122,6 +145,8 @@
                 'group': this.group_value,
                 'season': this.season
             }).then(response => {
+
+                    this.loading=false;
                     this.players = response.data.players;
                     this.groups = response.data.groups;
                     this.group_value = response.data.group;
@@ -133,16 +158,45 @@
         methods: {
             submit() {
                 console.log("posted", this.season, this.group_value);
+                this.loading=true;
+
                 axios.post('/players/json', {
                     'group': this.group_value,
                     'season': this.season
                 }).then(response => {
+
+                    this.loading=false;
                         console.log("receive", response.data);
 
-                        this.players = response.data.players;
+                        //map chart data to moment format
+
+                    var player_chart_data = response.data.players.map((player) => {
+                        player.chart_data.map((entry) => {
+                            entry.x = moment(entry.x).toDate();
+                            return entry;
+                        });
+
+                        return {label: player.name,
+                                borderColor:"#"+((1<<24)*Math.random()|0).toString(16),
+                                fill: false,
+                                data: player.chart_data
+                        };
+                    });
+
+                    response.data.players.map((player) => {
+                        player.chart_data.map((entry) => {
+                            entry.x = moment(entry.x).toDate();
+                            return entry;
+                        });
+                    })
+                    this.chart_data = {
+                        datasets: player_chart_data
+                    };
+                    this.players = response.data.players;
                         this.groups = response.data.groups;
                         this.group_value = response.data.group;
                         this.season = response.data.season;
+
                     }
                 );
             }
