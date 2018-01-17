@@ -20,11 +20,6 @@ Vue.component('leaderboard', require('./components/Leaderboard.vue'));
 Vue.component('playertable', require('./components/Playertable.vue'));
 Vue.component('gameindex', require('./components/GameIndex.vue'));
 Vue.component('gametable', require('./components/GameTable.vue'));
-Vue.component('randomchart', require('./components/randomchart.vue'));
-
-
-
-
 
 
 const app = new Vue({

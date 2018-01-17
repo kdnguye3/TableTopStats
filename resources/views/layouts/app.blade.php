@@ -12,6 +12,7 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 
@@ -49,6 +50,7 @@
 
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
 
 </body>
 
