@@ -5,6 +5,8 @@
                 <li class="is-active"><a href="/players">Leaderboard</a></li>
             </ul>
         </nav>
+        <div class="columns">
+            <div class="column is-one-quarter">
                 <section class="panel">
                     <p class="panel-heading">
                         Filters
@@ -47,9 +49,12 @@
                         </form>
                     </div>
                 </section>
-                <div>
-                    <h1> Leaderboard</h1>
-                    <div   v-bind:class="{ 'is-loading' : loading}" v-if="group_value" style="height:500px">
+            </div>
+
+            <div class="column is-three-quarters">
+                <section class="panel">
+                    <p class="panel-heading"> Leaderboard</p>
+                    <div class="panel-block"  v-bind:class="{ 'is-loading' : loading}" v-if="group_value" style="height:500px">
                             <line-chart :chart-data="chart_data" :options="{
                                     elements: {
                                         line: {
@@ -66,28 +71,36 @@
                         }}">
                             </line-chart>
                     </div>
-                </div>
-                <div>
-                    <b-table
-                            :data="filtered_player_list"
-                            :striped="true"
-                            :loading="loading">
-                        <template scope="props">
-                            <b-table-column label="Place" numeric>{{ props.index + 1}}</b-table-column>
-                            <b-table-column label="Name">{{ props.row.name }}</b-table-column>
-                            <b-table-column label="Plays">{{ props.row.play_count }}</b-table-column>
-                            <b-table-column label="Wins">{{ props.row.wins }}</b-table-column>
-                            <b-table-column label="Win Rate">{{ props.row.win_rate | percent }}%</b-table-column>
-                            <b-table-column label="Adjusted Plays">{{ props.row.new_play_count | round }}</b-table-column>
-                            <b-table-column label="Adjusted Wins">{{ props.row.new_wins | round }}</b-table-column>
-                            <b-table-column label="Adjusted Win Rate">{{ props.row.new_win_rate | percent }}%</b-table-column>
-                            <b-table-column label="Expected Win Rate">{{ props.row.new_expected_win_rate | percent}}%</b-table-column>
-                            <b-table-column label="POE">{{ props.row.new_adjusted_win_rate | percent}}%</b-table-column>
-
-                        </template>
-                    </b-table>
-                </div>
-
+                    <div class="panel-block table-panel-body"  v-bind:class="{ 'is-loading' : loading}">
+                        <table class="table is-narrower leaderboard">
+                            <thead>
+                            <th>Place</th>
+                            <th>Player Name</th>
+                            <th>Plays</th>
+                            <th>Wins</th>
+                            <th>Win Rate</th>
+                            <th>Adjusted Plays</th>
+                            <th>Adjusted Wins</th>
+                            <th>Adjusted Win Rate</th>
+                            <th>Expected Win Rate</th>
+                            <th>POE</th>
+                            </thead>
+                            <tr v-for="(player,index) in filtered_player_list">
+                                <th>{{index + 1}}</th>
+                                <td><a v-bind:href="'/players/'+ player.id + '?group=' + group_value + '&season=' + season">{{player.name}}</a></td>
+                                <td>{{player.play_count}}</td>
+                                <td>{{player.wins}}</td>
+                                <td>{{player.win_rate | percent }}%</td>
+                                <td>{{player.new_play_count | round}}</td>
+                                <td>{{player.new_wins | round}}</td>
+                                <td>{{player.new_win_rate | percent}}%</td>
+                                <td>{{player.new_expected_win_rate | percent}}%</td>
+                                <td>{{player.new_adjusted_win_rate | percent}}%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 </template>

@@ -5,6 +5,7 @@
 // Variables
 @import "variables";
 
+@import "node_modules/bulma/bulma";
 
 
 .navbar a {
@@ -19,7 +20,44 @@
   font-size: 0.85rem;
 }
 
+.table-panel-body{
+  overflow-x:scroll;
+}
 
 #breadcrumbs-container {
   margin-bottom: 0px;
+}
+
+.table-panel-body {
+  &.is-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.5;
+    &:after {
+      @include loader;
+      position: absolute;
+      top: calc(50% - 2.5em);
+      left: calc(50% - 2.5em);
+      width: 5em;
+      height: 5em;
+      border: 2px solid #4c4c4c;
+      border-top-color: transparent;
+      border-top-style: solid;
+      border-top-width: 2px;
+      border-right-color: transparent;
+      border-right-style: solid;
+      border-right-width: 2px;
+      border-bottom-color: #4c4c4c;
+      border-bottom-style: solid;
+      border-bottom-width: 2px;
+      border-left-color: #4c4c4c;
+      border-left-style: solid;
+      border-left-width: 2px;
+      border-image-source: initial;
+      border-image-slice: initial;
+      border-image-width: initial;
+      border-image-outset: initial;
+      border-image-repeat: initial;
+    }
+  }
 }
