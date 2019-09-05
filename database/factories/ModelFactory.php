@@ -29,21 +29,18 @@ $factory->define(App\Player::class, function (Faker\Generator $faker) {
     ];
 });
 
-
 $factory->define(App\Game::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'name' => "Game".$faker->name,
+        'name' => 'Game'.$faker->name,
     ];
 });
-
 
 $factory->define(App\Play::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'game_id' => 1
+        'game_id' => 1,
     ];
 });
-

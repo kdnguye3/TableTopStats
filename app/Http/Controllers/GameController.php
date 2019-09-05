@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Game;
-use App\Services\GameService;
-use Illuminate\Http\Request;
 use App\Group;
+use Illuminate\Http\Request;
+use App\Services\GameService;
 
 class GameController extends Controller
 {
@@ -15,6 +15,7 @@ class GameController extends Controller
     {
         $this->gameService = $gameService;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +23,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        return view("games.index");
+        return view('games.index');
     }
 
     /**
@@ -54,7 +55,7 @@ class GameController extends Controller
      */
     public function show($id, Request $request)
     {
-        return view('games.show',['id'=>$id,'group'=>$request->group,'season'=>$request->season]);
+        return view('games.show', ['id'=>$id, 'group'=>$request->group, 'season'=>$request->season]);
     }
 
     /**
@@ -93,7 +94,6 @@ class GameController extends Controller
 
     //show games /complexity
 
-
     public function json(Request $request)
     {
         $result = collect();
@@ -104,10 +104,11 @@ class GameController extends Controller
         $result['groups'] = Group::all();
         $result['group'] = intval($request->group);
         $result['season'] = $season;
+
         return response()->json($result);
     }
 
-    public function gamejson(Game $game,Request $request )
+    public function gamejson(Game $game, Request $request)
     {
         $result = collect();
         $season = intval($request->season);
@@ -117,6 +118,7 @@ class GameController extends Controller
         $result['group'] = intval($request->group);
         $result['season'] = $season;
         $result['game'] = $game;
+
         return response()->json($result);
     }
 }

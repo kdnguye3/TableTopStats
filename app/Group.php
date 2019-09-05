@@ -8,7 +8,8 @@ class Group extends Model
 {
     protected $fillable = ['name'];
 
-    public function players() {
+    public function players()
+    {
         return $this->belongsToMany(\App\Player::class);
     }
 }

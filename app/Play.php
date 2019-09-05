@@ -16,12 +16,13 @@ class Play extends Model
         });
     }
 
-    public function game(){
+    public function game()
+    {
         return $this->belongsTo(\App\Game::class);
     }
 
-    public function players(){
+    public function players()
+    {
         return $this->belongsToMany(\App\Player::class)->withPivot('place');
     }
-
 }
