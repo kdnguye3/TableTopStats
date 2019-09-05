@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Group;
-use App\Services\PlayerService;
-use Illuminate\Http\Request;
 use App\Player;
 use GuzzleHttp;
+use Illuminate\Http\Request;
+use App\Services\PlayerService;
 
 class PlayerController extends Controller
 {
@@ -15,6 +16,7 @@ class PlayerController extends Controller
     {
         $this->playerService = $playerService;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -52,9 +54,9 @@ class PlayerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request )
+    public function show($id, Request $request)
     {
-        return view('players.show',['id'=>$id,'group'=>$request->group,'season'=>$request->season]);
+        return view('players.show', ['id'=>$id, 'group'=>$request->group, 'season'=>$request->season]);
     }
 
     /**
@@ -91,8 +93,6 @@ class PlayerController extends Controller
         //
     }
 
-
-
     public function json(Request $request)
     {
         $result = collect();
@@ -103,10 +103,11 @@ class PlayerController extends Controller
         $result['groups'] = Group::all();
         $result['group'] = intval($request->group);
         $result['season'] = $season;
+
         return response()->json($result);
     }
 
-    public function playerjson(Player $player,Request $request )
+    public function playerjson(Player $player, Request $request)
     {
         $result = collect();
         $season = intval($request->season);
@@ -116,6 +117,7 @@ class PlayerController extends Controller
         $result['group'] = intval($request->group);
         $result['season'] = $season;
         $result['player'] = $player;
+
         return response()->json($result);
     }
 

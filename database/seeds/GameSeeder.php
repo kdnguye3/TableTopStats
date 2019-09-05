@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Game;
-
+use Illuminate\Database\Seeder;
 
 class GameSeeder extends Seeder
 {

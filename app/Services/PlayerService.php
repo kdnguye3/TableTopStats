@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Group;
 use App\Play;
+use App\Group;
 use App\Player;
 use Carbon\Carbon;
-
 
 class PlayerService
 {
@@ -14,12 +13,12 @@ class PlayerService
     {
         $wins = 0;
         foreach ($player->plays as $play) {
-            if (!$play->ignored) {
+            if (! $play->ignored) {
             }
         }
+
         return $wins;
     }
-
 
     public function getPlayers($group = null, $season = null)
     {
@@ -37,19 +36,17 @@ class PlayerService
             $last_date = Carbon::parse($player->plays[0]->play_date);
             $same_date = false;
             $current_date = null;
-            $i= 0;
+            $i = 0;
             foreach ($player->plays as $play) {
-
                 $current_date = Carbon::parse($play->play_date);
-                if (!$current_date->isSameDay($last_date) && $play_count !=0){
-                    $chart_data->push(['x'=>$player->plays[$i-1]->play_date, 'y'=> $wins/$play_count]);
+                if (! $current_date->isSameDay($last_date) && $play_count != 0) {
+                    $chart_data->push(['x'=>$player->plays[$i - 1]->play_date, 'y'=> $wins / $play_count]);
                     //dd($play->play_date,$wins/$play_count);
                     $same_date = false;
-                    if ($player->name == "Chris Mayer"){
-                       // dd($current_date,$last_date);
+                    if ($player->name == 'Chris Mayer') {
+                        // dd($current_date,$last_date);
                     }
-                }
-                else{
+                } else {
                     $same_date = true;
                 }
                 $last_date = Carbon::parse($play->play_date);
@@ -62,8 +59,8 @@ class PlayerService
                 $new_wins += $play->pivot->place * $play->game->weight;
                 $i++;
             }
-            if ($same_date){
-                $chart_data->push(['x'=>$player->plays[count($player->plays)-1]->play_date, 'y'=> $wins/$play_count]);
+            if ($same_date) {
+                $chart_data->push(['x'=>$player->plays[count($player->plays) - 1]->play_date, 'y'=> $wins / $play_count]);
             }
 
             if (count($player->plays)) {
@@ -84,8 +81,8 @@ class PlayerService
 
                 $output->push($player);
             }
-
         }
+
         return array_values($output->sortByDesc('new_adjusted_win_rate')->toArray());
     }
 
@@ -101,20 +98,20 @@ class PlayerService
         if ($season === 1) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-08-01 00:00:01');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-29 23:59:59');
-        } else if ($season === 2) {
+        } elseif ($season === 2) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-30 00:00:00');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2018-05-29 23:59:59');
         }
 
-            $players = $group ? Player::group($group)->with(['plays' => function ($query) use ($group_names, $startDate, $endDate) {
-                return $startDate ? $query->where('play_date', '>', $startDate)->where('play_date', '<', $endDate)
+        $players = $group ? Player::group($group)->with(['plays' => function ($query) use ($group_names, $startDate, $endDate) {
+            return $startDate ? $query->where('play_date', '>', $startDate)->where('play_date', '<', $endDate)
                     ->whereHas('players', function ($query) use ($group_names) {
                         $query->whereIn('name', $group_names);
                     }, '>=', 3)->orderBy('play_date')
                     : $query->whereHas('players', function ($query) use ($group_names) {
                         $query->whereIn('name', $group_names);
                     }, '>=', 3)->orderBy('play_date');
-            }])->get()
+        }])->get()
                 : Player::with(['plays' => function ($query) use ($startDate, $endDate) {
                     return $startDate ? $query->where('play_date', '>', $startDate)->where('play_date', '<', $endDate)->orderBy('play_date') : $query->orderBy('play_date');
                 }])->get();
@@ -134,7 +131,7 @@ class PlayerService
         if ($season === 1) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-08-01 00:00:01');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-29 23:59:59');
-        } else if ($season === 2) {
+        } elseif ($season === 2) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-30 00:00:00');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2018-05-29 23:59:59');
         }
@@ -146,11 +143,10 @@ class PlayerService
                 $query->whereIn('name', $group_names);
             }, '>=', 3)
                 : $plays;
-
         }
+
         return $plays->get();
     }
-
 
     public function getPlays($player, $group = null, $season = null)
     {
@@ -167,26 +163,27 @@ class PlayerService
                 $games[$game->id]['play_count'] += 1;
                 $games[$game->id]['wins'] += $play->pivot->place;
                 $games[$game->id]['new_play_count'] += $game->weight;
-                $games[$game->id]['new_wins'] +=  $play->pivot->place * $game->weight;
+                $games[$game->id]['new_wins'] += $play->pivot->place * $game->weight;
             } else {
                 $games[$game->id] = collect(['name' => $game->name,
                     'play_count' => 1,
                     'wins' => $play->pivot->place,
                     'new_play_count' => $game->weight,
-                    'new_wins' => $play->pivot->place * $game->weight
+                    'new_wins' => $play->pivot->place * $game->weight,
                 ]);
             }
         }
 
         $games = $games->map(function ($game) {
-                $game['win_rate'] = $game['wins']/$game['play_count'] ;
-                $game['new_win_rate'] = $game['new_wins']/$game['new_play_count'];
+            $game['win_rate'] = $game['wins'] / $game['play_count'];
+            $game['new_win_rate'] = $game['new_wins'] / $game['new_play_count'];
+
             return $game;
         });
+
         return array_values($games->sortByDesc(function ($value) {
             return $value['play_count'];
         })->toArray());
-
     }
 
     public function getExpectedWinRate(Player $player)
@@ -194,12 +191,11 @@ class PlayerService
         $opponents = 0;
 
         foreach ($player->plays as $play) {
-            if (!$play->ignored) {
+            if (! $play->ignored) {
                 $opponents = $play->teams ? $opponents + $play->teams : $opponents + count($play->players);
             }
         }
+
         return 1 / ($opponents / count($player->plays));
-
     }
-
 }

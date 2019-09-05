@@ -13,7 +13,7 @@ class PlayController extends Controller
      */
     public function index()
     {
-        return redirect()->route("plays.games");
+        return redirect()->route('plays.games');
     }
 
     /**
@@ -84,6 +84,6 @@ class PlayController extends Controller
 
     public function chronological()
     {
-        return view("plays.");
+        return view('plays.');
     }
 }

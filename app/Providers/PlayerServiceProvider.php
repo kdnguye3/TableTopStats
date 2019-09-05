@@ -14,7 +14,7 @@ class PlayerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton(PlayerService::class, function($app) {
+        $this->app->singleton(PlayerService::class, function ($app) {
             return new PlayerService();
         });
     }
@@ -26,6 +26,5 @@ class PlayerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 }

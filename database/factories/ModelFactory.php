@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -11,7 +13,7 @@
 |
 */
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -19,7 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'remember_token' => Str::random(10),
     ];
 });
 
@@ -29,21 +31,18 @@ $factory->define(App\Player::class, function (Faker\Generator $faker) {
     ];
 });
 
-
 $factory->define(App\Game::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'name' => "Game".$faker->name,
+        'name' => 'Game'.$faker->name,
     ];
 });
-
 
 $factory->define(App\Play::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'game_id' => 1
+        'game_id' => 1,
     ];
 });
-
