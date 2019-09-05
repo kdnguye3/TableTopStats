@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Game;
-use App\Player;
 use App\Play;
+use App\Player;
+use Illuminate\Database\Seeder;
 
 class ImportStatsSeeder extends Seeder
 {
@@ -14,14 +14,13 @@ class ImportStatsSeeder extends Seeder
      */
     public function run()
     {
-        $json = json_decode(file_get_contents('./database/seeds/BGStatsExport.json'),true);
+        $json = json_decode(file_get_contents('./database/seeds/BGStatsExport.json'), true);
         //dd($json['plays'][3]);
         $games = collect();
-        $bggIds = "";
-        foreach ($json['games'] as $game){
+        $bggIds = '';
+        foreach ($json['games'] as $game) {
             $games->push(collect(['id'=>$game['id'], 'name'=>$game['name']]));
-            $bggIds = $bggIds .  $game['bggId'] .",";
-
+            $bggIds = $bggIds.$game['bggId'].',';
         }
         substr($bggIds, 0, -1);
         $client = new GuzzleHttp\Client();
@@ -29,39 +28,37 @@ class ImportStatsSeeder extends Seeder
             'query' => [
                 'type' => 'boardgame',
                 'id' => $bggIds,
-                'stats' => 1
-            ]
+                'stats' => 1,
+            ],
         ]);
 
         $xml = simplexml_load_string($res->getBody());
         $jsonE = json_encode($xml);
-        $array = json_decode($jsonE,TRUE);
+        $array = json_decode($jsonE, true);
 
-        foreach ($games as $key=>$game){
-            $weight= $array['item'][$key]['statistics']['ratings']['averageweight']['@attributes']['value'];
-            Game::firstOrCreate(['id'=>$game['id'],'name'=>$game['name'],'weight' => $weight]);
+        foreach ($games as $key=>$game) {
+            $weight = $array['item'][$key]['statistics']['ratings']['averageweight']['@attributes']['value'];
+            Game::firstOrCreate(['id'=>$game['id'], 'name'=>$game['name'], 'weight' => $weight]);
         }
-        $huh = Game::where('name','Huh?')->first();
+        $huh = Game::where('name', 'Huh?')->first();
         $huh->weight = 1.00;
         $huh->save();
-        foreach ($json['players'] as $player){
-            Player::firstOrCreate(['id'=>$player['id'],'name'=>$player['name']]);
+        foreach ($json['players'] as $player) {
+            Player::firstOrCreate(['id'=>$player['id'], 'name'=>$player['name']]);
         }
 
-        foreach ($json['plays'] as $play){
-            if ($play['gameRefId'] === 20){
-                $newPlay = Play::firstOrCreate(['uuid' => $play['uuid'],'play_date'=>$play['playDate'],'ignored'=>$play['ignored'],'game_id'=>$play['gameRefId'],'teams'=>  4 ]);
+        foreach ($json['plays'] as $play) {
+            if ($play['gameRefId'] === 20) {
+                $newPlay = Play::firstOrCreate(['uuid' => $play['uuid'], 'play_date'=>$play['playDate'], 'ignored'=>$play['ignored'], 'game_id'=>$play['gameRefId'], 'teams'=>  4]);
+            } else {
+                $newPlay = Play::firstOrCreate(['uuid' => $play['uuid'], 'play_date'=>$play['playDate'], 'ignored'=>$play['ignored'], 'game_id'=>$play['gameRefId'], 'teams'=> $play['usesTeams'] ? 2 : 0]);
             }
-            else{
-                $newPlay = Play::firstOrCreate(['uuid' => $play['uuid'],'play_date'=>$play['playDate'],'ignored'=>$play['ignored'],'game_id'=>$play['gameRefId'],'teams'=> $play['usesTeams'] ? 2 : 0]);
-            }
-            foreach ($play['playerScores'] as $player){
-                if ($play['gameRefId'] === 45 && $player['playerRefId'] === 23){
+            foreach ($play['playerScores'] as $player) {
+                if ($play['gameRefId'] === 45 && $player['playerRefId'] === 23) {
                     //dd($play['playerScores'], $player);
                 }
-                $newPlay->players()->attach($player['playerRefId'],['place'=> $player['winner']]);
+                $newPlay->players()->attach($player['playerRefId'], ['place'=> $player['winner']]);
             }
-
         }
     }
 }

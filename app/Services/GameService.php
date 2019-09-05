@@ -4,14 +4,10 @@ namespace App\Services;
 
 use App\Game;
 use App\Player;
-
 use Carbon\Carbon;
-
 
 class GameService
 {
-
-
     public function getGames($group = null, $season = null)
     {
         $games = $this->filterPlays($group, $season);
@@ -22,8 +18,8 @@ class GameService
                 $game->play_count = count($game->plays);
                 $output->push($game);
             }
-
         }
+
         return array_values($output->sortByDesc('play_count')->toArray());
     }
 
@@ -40,7 +36,7 @@ class GameService
             //TODO create enum for this
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-08-01 00:00:01');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-29 23:59:59');
-        } else if ($season === 2) {
+        } elseif ($season === 2) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-30 00:00:00');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2018-05-29 23:59:59');
         }
@@ -73,7 +69,7 @@ class GameService
         if ($season === 1) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-08-01 00:00:01');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-29 23:59:59');
-        } else if ($season === 2) {
+        } elseif ($season === 2) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', '2017-05-30 00:00:00');
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', '2018-05-29 23:59:59');
         }
@@ -87,11 +83,10 @@ class GameService
                 $query->whereIn('name', $group_names);
             }, '>=', 3)
                 : $plays;
-
         }
+
         return $plays->get();
     }
-
 
     public function getPlayers($game, $group = null, $season = null)
     {
@@ -106,31 +101,27 @@ class GameService
             //if game name is set add to it
             //get players in play
             $players = $play->players;
-            foreach ($players as $player){
+            foreach ($players as $player) {
                 if (isset($output[$player->id])) {
                     $output[$player->id]['play_count'] += 1;
                     $output[$player->id]['wins'] += $player->pivot->place;
                 } else {
                     $output[$player->id] = collect(['name' => $player->name,
                         'play_count' => 1,
-                        'wins' => $player->pivot->place
+                        'wins' => $player->pivot->place,
                     ]);
                 }
-
             }
-
         }
 
-
         $output = $output->map(function ($player) {
-            $player['win_rate'] = $player['wins']/$player['play_count'] ;
+            $player['win_rate'] = $player['wins'] / $player['play_count'];
+
             return $player;
         });
 
         return array_values($output->sortByDesc(function ($value) {
             return $value['win_rate'];
         })->toArray());
-
     }
-
 }

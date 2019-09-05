@@ -13,7 +13,7 @@ class CreateGroupPlayerTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_player', function(Blueprint $table){
+        Schema::create('group_player', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('group_id')->unsigned();
             $table->foreign('group_id')->references('id')->on('groups');

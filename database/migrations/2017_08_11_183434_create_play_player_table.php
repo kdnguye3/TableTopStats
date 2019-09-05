@@ -13,7 +13,7 @@ class CreatePlayPlayerTable extends Migration
      */
     public function up()
     {
-        Schema::create('play_player', function(Blueprint $table){
+        Schema::create('play_player', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('play_id')->unsigned();
             $table->foreign('play_id')->references('id')->on('plays');

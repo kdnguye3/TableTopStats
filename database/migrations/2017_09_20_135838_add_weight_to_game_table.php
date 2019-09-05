@@ -13,7 +13,7 @@ class AddWeightToGameTable extends Migration
      */
     public function up()
     {
-        Schema::table('games', function(Blueprint $table){
+        Schema::table('games', function (Blueprint $table) {
             $table->decimal('weight')->default(1.0);
         });
     }
@@ -25,7 +25,7 @@ class AddWeightToGameTable extends Migration
      */
     public function down()
     {
-        Schema::table('games', function(Blueprint $table){
+        Schema::table('games', function (Blueprint $table) {
             $table->dropColumn('weight');
         });
     }
